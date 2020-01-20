@@ -8,6 +8,12 @@ command = "wasm-pack"
 args = ["build", "--target", "web", "--out-name", "package", "--dev"]
 dependencies = ["lint"]
 
+[tasks.build_release]
+description = "Build with wasm-pack"
+install_crate = { crate_name = "wasm-pack", binary = "wasm-pack", test_arg = "-V" }
+command = "wasm-pack"
+args = ["build", "--target", "web", "--out-name", "package"]
+
 [tasks.watch]
 description = "Build and watch"
 command = "wasm-pack"
@@ -21,6 +27,14 @@ install_crate = { crate_name = "microserver", binary = "microserver", test_arg =
 command = "microserver"
 args = ["--port", "8888"]
 dependencies = ["build"]
+
+[tasks.test]
+description = "Run tests. Ex: 'cargo make test firefox'. Test envs: [chrome, firefox, safari]"
+clear = true
+workspace = false
+install_crate = { crate_name = "wasm-pack", binary = "wasm-pack", test_arg = "-V", min_version = "0.8.0" }
+command = "wasm-pack"
+args = ["test", "--${@}"]
 
 [tasks.lint]
 description = "Lint with Clippy"
